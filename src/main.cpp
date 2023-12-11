@@ -11,11 +11,10 @@ struct Flags
 
 void printMenu(const Flags flag);
 void menuInfo();
-int  getChoice();
-int  getInfoChoice();
+int  getChoice(const Flags& flag);
 void management(UserManager& UM, Flags& flag);
-void infoManagement(UserManager& UM, bool& flag);
-void changeInfo(UserManager& UM);
+void infoManagement(UserManager& UM, const Flags& main_flag, bool& flag);
+void changeInfo(UserManager& UM, const Flags& main_flag);
 bool login(UserManager& UM);
 
 int main()
@@ -64,10 +63,17 @@ void menuInfo()
     std::cout << "\t\t3. Return to Main Menu \n";
 }
 
-int getChoice()
+int getChoice(const Flags& flag)
 {
+    int max_choice{};
+
+    if(!flag.logged_in)
+        max_choice = 6;
+    else
+        max_choice = 3; 
+
     int choice{};
-    std::cout << "\t\tEnter Your Choice: ";
+    std::cout << "\n\n\t\tEnter Your Choice: ";
     while(true)
     {
         std::cin >> choice;
@@ -84,29 +90,9 @@ int getChoice()
     }
 }
 
-int getInfoChoice()
-{
-    int choice{};
-    std::cout << "\n\n\t\tEnter Your Choice: ";
-    while(true)
-    {
-        std::cin >> choice;
-
-        if( !std::cin || choice <= 0 || choice > 3)
-        {
-            std::cout << '\t';
-            MI::handleInput();
-            continue;
-        }
-
-        MI::ignoreLine();
-        return choice; 
-    }
-}
-
 void management(UserManager& UM, Flags& flag)
 {
-    switch(getChoice())
+    switch(getChoice(flag))
     {
         case 1:
             if(!flag.logged_in)
@@ -140,7 +126,7 @@ void management(UserManager& UM, Flags& flag)
             }
             else
             {
-                changeInfo(UM);
+                changeInfo(UM, flag);
             }
             break;
         case 6:
@@ -159,9 +145,9 @@ bool login(UserManager& UM)
     return UM.loginUser(username, password);    
 }
 
-void infoManagement(UserManager& UM, bool& scnd_flag)
+void infoManagement(UserManager& UM, const Flags& main_flag, bool& scnd_flag)
 {
-    switch(getInfoChoice())
+    switch(getChoice(main_flag))
     {
         case 1:
             UM.changeUsername();
@@ -178,12 +164,12 @@ void infoManagement(UserManager& UM, bool& scnd_flag)
     }        
 }
 
-void changeInfo(UserManager& UM)
+void changeInfo(UserManager& UM, const Flags& main_flag)
 {
     bool scnd_flag{ true };
     while( scnd_flag )
     {
         menuInfo();
-        infoManagement(UM, scnd_flag);
+        infoManagement(UM, main_flag, scnd_flag);
     }
 }
