@@ -7,14 +7,15 @@ struct Flags
 {
     bool control{ true };
     bool logged_in{ false };
+    bool info_menu{ false };
 };
 
 void printMenu(const Flags flag);
 void menuInfo();
 int  getChoice(const Flags& flag);
 void management(UserManager& UM, Flags& flag);
-void infoManagement(UserManager& UM, const Flags& main_flag, bool& flag);
-void changeInfo(UserManager& UM, const Flags& main_flag);
+void infoManagement(UserManager& UM,Flags& flag);
+void changeInfo(UserManager& UM, Flags& flag);
 bool login(UserManager& UM);
 
 int main()
@@ -67,10 +68,10 @@ int getChoice(const Flags& flag)
 {
     int max_choice{};
 
-    if(!flag.logged_in)
-        max_choice = 6;
+    if( flag.logged_in && flag.info_menu )
+        max_choice = 3;
     else
-        max_choice = 3; 
+        max_choice = 6; 
 
     int choice{};
     std::cout << "\n\n\t\tEnter Your Choice: ";
@@ -78,7 +79,7 @@ int getChoice(const Flags& flag)
     {
         std::cin >> choice;
 
-        if( !std::cin || choice <= 0 || choice > 6)
+        if( !std::cin || choice <= 0 || choice > max_choice)
         {
             std::cout << '\t';
             MI::handleInput();
@@ -145,9 +146,9 @@ bool login(UserManager& UM)
     return UM.loginUser(username, password);    
 }
 
-void infoManagement(UserManager& UM, const Flags& main_flag, bool& scnd_flag)
+void infoManagement(UserManager& UM,Flags& flag)
 {
-    switch(getChoice(main_flag))
+    switch(getChoice(flag))
     {
         case 1:
             UM.changeUsername();
@@ -157,19 +158,19 @@ void infoManagement(UserManager& UM, const Flags& main_flag, bool& scnd_flag)
             break;
         case 3:
             Settings::clearScreen();
-            scnd_flag = false;
+            flag.info_menu = false;
             break;
         default:
             break;    
     }        
 }
 
-void changeInfo(UserManager& UM, const Flags& main_flag)
+void changeInfo(UserManager& UM, Flags& flag)
 {
-    bool scnd_flag{ true };
-    while( scnd_flag )
+    flag.info_menu = true;
+    while( flag.info_menu )
     {
         menuInfo();
-        infoManagement(UM, main_flag, scnd_flag);
+        infoManagement(UM, flag);
     }
 }
