@@ -172,6 +172,8 @@ void infoManagement(UserManager& UM, bool& scnd_flag)
             Settings::clearScreen();
             scnd_flag = false;
             break;
+        default:
+            break;    
     }        
 }
 
