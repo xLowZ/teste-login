@@ -168,6 +168,7 @@ void infoManagement(UserManager& UM, bool& scnd_flag)
             break;
         case 2:
             UM.changePassword();
+            break;
         case 3:
             Settings::clearScreen();
             scnd_flag = false;
