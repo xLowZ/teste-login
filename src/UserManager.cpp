@@ -138,11 +138,11 @@ void UserManager::changePassword()
     {
         if( user.isLogged() )
         {
-            std::cout << "\t\tBefore it, please confirm your password\n";
+            std::cout << "\t\tBefore it, please confirm your current password\n\n";
 
             Settings::confirmPassword(user.getPassword());
 
-            std::cout << "\t\tNow, enter your new password\n";
+            std::cout << "\n\t\tNow, enter your new password\n\n";
 
             std::string NewPassword{ Settings::enterPassword() };
 
