@@ -67,11 +67,11 @@ void UserManager::showUsers() const
 {
     Settings::clearScreen();
 
-    std::cout << "\t\t-=-=-=-=-=-=- Users List -=-=-=-=-=-=-\n";
-    std::cout << "\t\t\t (Currently " << getUserCount() << " users)\n\n";
+    std::cout << "\t\t-=-=-=-=-=-=- Users List -=-=-=-=-=-=-\n\n";
 
     for( const auto& user: m_users )
         std::cout << "\t\t\t\t" << user.getUsername() << '\n';
+ 
 }
 
 void UserManager::searchUser(const std::string_view name) const
