@@ -150,7 +150,9 @@ void UserManager::changePassword()
 
             Settings::confirmPassword(NewPassword);
 
-            user.setPassword(NewPassword);           
+            user.setPassword(NewPassword);
+
+            return;           
         }  
     }
 }
