@@ -7,6 +7,18 @@
 
 namespace Settings
 {
+
+    inline bool passwordVerifier(std::string_view pass)
+    {
+        auto hasLetter = std::any_of(pass.begin(), pass.end(),
+                                    [](char c) { return std::isalpha(c) != 0; });    
+        
+        auto hasNumber = std::any_of(pass.begin(), pass.end(), 
+                                     [](char c) { return std::isdigit(c) != 0; });
+        
+        return hasLetter && hasNumber;
+    }
+
     inline void confirmPassword(std::string_view password)
     {
         while (true)
@@ -62,6 +74,9 @@ namespace Settings
 
     inline std::string enterPassword()
     {
+        constexpr std::size_t minPassLength{ 4 };
+        constexpr std::size_t maxPassLength{ 30 };
+
         std::string password{};
         std::cout << "\t\tEnter your password: ";
         while(true)
@@ -69,9 +84,28 @@ namespace Settings
             std::cin >> password;
 
             if( !std::cin )
-            {
+            {   
                 std::cout << '\t';
                 MI::handleInput();
+                continue;
+            }
+
+            if ( password.length() < minPassLength || password.length() > maxPassLength )
+            {
+                std::cout << '\t';
+                std::cin.clear();
+                MI::ignoreLine();
+                std::cout << "The password must have between "<< minPassLength <<
+                " and " << maxPassLength << " characters: ";
+                continue;
+            }
+
+            if(!passwordVerifier(password))
+            {
+                std::cout << '\t';
+                std::cin.clear();
+                MI::ignoreLine();
+                std::cout << "The password must have at least 1 digit and 1 character: ";
                 continue;
             }
 
