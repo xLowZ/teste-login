@@ -17,7 +17,7 @@ public:
     void setUsername(std::string other) { m_username = other; }
     void setPassword(std::string other) { m_password = other; }
 
-    ~User() = default;
+    ~User(){ m_logged = false; }
 
 private:
     std::string m_username{};
