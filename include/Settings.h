@@ -7,7 +7,6 @@
 
 namespace Settings
 {
-
     inline bool passwordVerifier(std::string_view pass)
     {
         auto hasLetter = std::any_of(pass.begin(), pass.end(),
@@ -48,11 +47,24 @@ namespace Settings
 
     inline std::string enterUsername()
     {
+        constexpr std::size_t minUsernameLength{ 3 };
+        constexpr std::size_t maxUsernameLength{ 15 };
+
         std::string username{};
         std::cout << "\n\t\tEnter the username: ";
         while(true)
         {
             std::cin >> username;
+
+            if(  username.length() < minUsernameLength || username.length() > maxUsernameLength  )
+            {
+                std::cout << '\t';
+                std::cin.clear();
+                MI::ignoreLine();
+                std::cout << "The username must have between "<< minUsernameLength <<
+                " and " << maxUsernameLength << " characters: ";
+                continue;
+            }
 
             auto it{ std::find_if(username.begin(), username.end(), 
                     [](char c)
