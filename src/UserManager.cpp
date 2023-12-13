@@ -127,7 +127,8 @@ void UserManager::changeUsername()
                 }
             }
 
-            user.setUsername(NewUsername);           
+            user.setUsername(NewUsername);
+            return;           
         }  
     }
 }
